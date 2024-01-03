@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "498477878594",
+    "project_id": "photogallery-26339",
+    "storage_bucket": "photogallery-26339.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:498477878594:android:b7e9b0bee910ed04df0cdb",
+        "android_client_info": {
+          "package_name": "com.example.photogallery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp-3vkWnBUMXIGVDutMpEiPuhky_vo654"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
