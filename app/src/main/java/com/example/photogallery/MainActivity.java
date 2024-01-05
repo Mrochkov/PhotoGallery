@@ -61,9 +61,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
+
+
     private void openFileChooser() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -81,6 +81,5 @@ public class MainActivity extends AppCompatActivity {
 
             Picasso.with(this).load(mImageUri).into(mImageView);
         }
-
     }
 }
