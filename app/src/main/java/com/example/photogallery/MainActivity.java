@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         mTextViewShowUploads.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                openImageActivity();
             }
         });
     }
@@ -151,4 +151,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void openImageActivity(){
+        Intent intent = new Intent(this, ImagesActivity.class);
+        startActivity(intent);
+    }
 }
