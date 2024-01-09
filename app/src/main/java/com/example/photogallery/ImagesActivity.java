@@ -19,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImagesActivity extends AppCompatActivity {
+public class ImagesActivity extends AppCompatActivity implements ImageAdapter.OnItemClickListener {
 
     private RecyclerView mRecyclerView;
     private ImageAdapter mAdapter;
@@ -39,17 +39,24 @@ public class ImagesActivity extends AppCompatActivity {
 
         mUpload = new ArrayList<>();
 
+        mAdapter = new ImageAdapter(ImagesActivity.this, mUpload);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(ImagesActivity.this);
+
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("uploads");
 
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                mUpload.clear();
+
                 for (DataSnapshot postSnapshot : snapshot.getChildren()){
                     Upload upload = postSnapshot.getValue(Upload.class);
                     mUpload.add(upload);
                 }
-                mAdapter = new ImageAdapter(ImagesActivity.this, mUpload);
-                mRecyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
+
                 mProgressCircle.setVisibility(View.INVISIBLE);
             }
 
@@ -60,5 +67,22 @@ public class ImagesActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Toast.makeText(this, "Normal click at position: " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onWhateverClick(int position) {
+        Toast.makeText(this, "Whatever click at position: " + position, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onDeleteClick(int position) {
+        Toast.makeText(this, "Delete click at position: " + position, Toast.LENGTH_SHORT).show();
+
     }
 }
