@@ -1,0 +1,29 @@
+
+E
+java:S3740."/Provide the parametrized type for this generic.(Öö¥í
+C
+java:S1604?"(Make this anonymous inner class a lambda(ÍÄŽ…üÿÿÿÿ
+C
+java:S1604G"(Make this anonymous inner class a lambda(è”¤ÿÿÿÿÿ
+=
+java:S1604R"(Make this anonymous inner class a lambda(ÜÆž1
+>
+java:S1604{"(Make this anonymous inner class a lambda(†£°î
+>
+java:S1604w"(Make this anonymous inner class a lambda(öØ¡À
+D
+java:S1604ˆ"(Make this anonymous inner class a lambda(Ÿ ¹ÿÿÿÿÿ
+D
+java:S1604Ž"(Make this anonymous inner class a lambda(•–Û¨úÿÿÿÿ
+|
+java:S1450$"aRemove the "mButtonChooseImage" field and declare it as a local variable in the relevant methods.(Îž¢°ýÿÿÿÿ
+r
+java:S1450%"\Remove the "mButtonUpload" field and declare it as a local variable in the relevant methods.(Û¯‘
+~
+java:S1450&"cRemove the "mTextViewShowUploads" field and declare it as a local variable in the relevant methods.(«ïëÏúÿÿÿÿ
+Y
+java:S1874_">Remove this use of "startActivityForResult"; it is deprecated.(“Œñ¬ÿÿÿÿÿ
+_
+java:S1874c"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(¹Î¾
+E
+java:S1874z"/Remove this use of "Handler"; it is deprecated.(’Ú©Š

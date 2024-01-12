@@ -1,8 +1,6 @@
 package com.example.photogallery;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
@@ -31,15 +32,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
 
     @NonNull
-    @androidx.annotation.NonNull
     @Override
-    public ImageViewHolder onCreateViewHolder(@NonNull @androidx.annotation.NonNull ViewGroup viewGroup, int i) {
+    public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(mContext).inflate(R.layout.image_item, viewGroup, false);
         return new ImageViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @androidx.annotation.NonNull ImageViewHolder imageViewHolder, int i) {
+    public void onBindViewHolder(@NonNull ImageViewHolder imageViewHolder, int i) {
         Upload uploadCurrent = mUploads.get(i);
         imageViewHolder.textViewName.setText(uploadCurrent.getName());
         Picasso.with(mContext)
@@ -61,7 +61,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         public ImageView imageView;
 
 
-        public ImageViewHolder(@NonNull @androidx.annotation.NonNull View itemView) {
+        public ImageViewHolder(@NonNull View itemView) {
             super(itemView);
 
             textViewName = imageView.findViewById(R.id.text_view_name);

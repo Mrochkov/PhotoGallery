@@ -1,0 +1,19 @@
+
+X
+(gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
+D
+app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
+A
+gradle.properties,2\a\2afbb999f001938c88fa43fc2ef52abf0f8213e4
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+l
+<app/src/main/java/com/example/photogallery/MainActivity.java,1\9\1904c847106b4f8aeb31e5ab11573de894a8f32f
+f
+6app/src/main/java/com/example/photogallery/Upload.java,8\0\80b5f9a4809bd47eeef3ce4a1e5a4035f02de1a2
+l
+<app/src/main/java/com/example/photogallery/ImageAdapter.java,d\c\dc63fc5e8860e2277110f9567658fc6ef6b62ce7
+n
+>app/src/main/java/com/example/photogallery/ImagesActivity.java,8\9\8950529e1fce79f5b39f8ce15859016acdc40945
+@
+build.gradle.kts,d\b\dbcff70658daf80b53ce624f6adcaa529df5ed8d
