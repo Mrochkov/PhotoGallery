@@ -1,5 +1,6 @@
 
 ~
-java:S1450"aRemove the "mDatabaseReference" field and declare it as a local variable in the relevant methods.(›İú·8íšÔ½Ï1
-~
-java:S1450"\Remove the "mRecyclerView" field and declare it as a local variable in the relevant methods.(Òéıÿÿÿÿ8îšÔ½Ï1
+java:S1450"aRemove the "mDatabaseReference" field and declare it as a local variable in the relevant methods.(›İú·8Ñ‰ªĞ1
+]	java:S125*"<This block of commented-out lines of code should be removed.(¡ú—Ÿşÿÿÿÿ8ƒûèƒĞ1
+]	java:S1254"<This block of commented-out lines of code should be removed.(åóÚäûÿÿÿÿ8ä™ëƒĞ1
+X	java:S125="<This block of commented-out lines of code should be removed.(£ğ»8êÓéƒĞ1

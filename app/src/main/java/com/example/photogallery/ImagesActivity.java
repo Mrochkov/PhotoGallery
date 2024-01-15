@@ -40,6 +40,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         mUpload = new ArrayList<>();
 
         mAdapter = new ImageAdapter(ImagesActivity.this, mUpload);
+
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(ImagesActivity.this);
 
@@ -55,7 +56,8 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
                     Upload upload = postSnapshot.getValue(Upload.class);
                     mUpload.add(upload);
                 }
-                mAdapter.notifyDataSetChanged();
+                mAdapter = new ImageAdapter(ImagesActivity.this, mUpload);
+                mRecyclerView.setAdapter(mAdapter);
 
                 mProgressCircle.setVisibility(View.INVISIBLE);
             }
