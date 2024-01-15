@@ -10,11 +10,14 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +26,11 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
 
     private RecyclerView mRecyclerView;
     private ImageAdapter mAdapter;
+    private FirebaseStorage mStorage;
     private DatabaseReference mDatabaseReference;
     private List<Upload> mUpload;
     private ProgressBar mProgressCircle;
+    private ValueEventListener mDataBaseListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +50,9 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         mAdapter.setOnItemClickListener(ImagesActivity.this);
 
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("uploads");
+        mStorage = FirebaseStorage.getInstance();
 
-        mDatabaseReference.addValueEventListener(new ValueEventListener() {
+        mDataBaseListener = mDatabaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -54,10 +60,10 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
 
                 for (DataSnapshot postSnapshot : snapshot.getChildren()){
                     Upload upload = postSnapshot.getValue(Upload.class);
+                    upload.setKey(postSnapshot.getKey());
                     mUpload.add(upload);
                 }
-                mAdapter = new ImageAdapter(ImagesActivity.this, mUpload);
-                mRecyclerView.setAdapter(mAdapter);
+                mAdapter.notifyDataSetChanged();
 
                 mProgressCircle.setVisibility(View.INVISIBLE);
             }
@@ -84,7 +90,23 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
 
     @Override
     public void onDeleteClick(int position) {
-        Toast.makeText(this, "Delete click at position: " + position, Toast.LENGTH_SHORT).show();
+        Upload selectedItem = mUpload.get(position);
+        String selectedKey = selectedItem.getKey();
 
+        StorageReference imageReference = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());
+        imageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                mDatabaseReference.child(selectedKey).removeValue();
+                Toast.makeText(ImagesActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mDatabaseReference.removeEventListener(mDataBaseListener);
+    }
+
 }
