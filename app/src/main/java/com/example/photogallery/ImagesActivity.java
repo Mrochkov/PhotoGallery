@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -79,7 +80,13 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
 
     @Override
     public void onItemClick(int position) {
-        Toast.makeText(this, "Normal click at position: " + position, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ImageDetailActivity.class);
+        Upload clickedItem = mUpload.get(position);
+        intent.putExtra("photo_url", mUpload.get(position).getImageUrl());
+        intent.putExtra("photo_name", clickedItem.getName());
+
+        // Add other photo details as extras if needed
+        startActivity(intent);
     }
 
     @Override

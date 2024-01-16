@@ -1,0 +1,4 @@
+
+F	java:S106%"+Replace this use of System.out by a logger.(ν„µS8…δ‚‹Ρ1
+N
+java:S1128"1Remove this unused import 'android.os.AsyncTask'.(ΐ»¥—8νδ¶‹Ρ1
