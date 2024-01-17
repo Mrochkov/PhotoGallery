@@ -1,8 +1,8 @@
 
 m
-java:S1301d"KReplace this "switch" statement by "if" statements to increase readability.(øå´¡ÿÿÿÿÿ8¡É³­Ï1
-n
-java:S1104<"XMake textViewName a static final constant or non-public and provide accessors if needed.(ŒÅøõ
+java:S1301d"KReplace this "switch" statement by "if" statements to increase readability.(øå´¡ÿÿÿÿÿ8õîð¢Ñ1
+u
+java:S1104<"XMake textViewName a static final constant or non-public and provide accessors if needed.(ŒÅøõ8º´Ï¢Ñ1
 w
-java:S1104="UMake imageView a static final constant or non-public and provide accessors if needed.(Ž…Çªúÿÿÿÿ8¬Ê³­Ï1
-C	java:S131d""Add a default case to this switch.(øå´¡ÿÿÿÿÿ8öÊ³­Ï1
+java:S1104="UMake imageView a static final constant or non-public and provide accessors if needed.(Ž…Çªúÿÿÿÿ8÷îð¢Ñ1
+C	java:S131d""Add a default case to this switch.(øå´¡ÿÿÿÿÿ8Úïð¢Ñ1
