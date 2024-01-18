@@ -1,33 +1,33 @@
 
 L
-java:S37404"/Provide the parametrized type for this generic.(Öö¥í8‰¥‰·Ñ1
+java:S37404"/Provide the parametrized type for this generic.(Öö¥í8Ü‚–ÐÑ1
 J
-java:S1604N"(Make this anonymous inner class a lambda(ÍÄŽ…üÿÿÿÿ8‹¥‰·Ñ1
+java:S1604N"(Make this anonymous inner class a lambda(ÍÄŽ…üÿÿÿÿ8Þ‚–ÐÑ1
 J
-java:S1604V"(Make this anonymous inner class a lambda(è”¤ÿÿÿÿÿ8‹¥‰·Ñ1
+java:S1604V"(Make this anonymous inner class a lambda(è”¤ÿÿÿÿÿ8Þ‚–ÐÑ1
 D
-java:S1604a"(Make this anonymous inner class a lambda(ÜÆž18‹¥‰·Ñ1
+java:S1604a"(Make this anonymous inner class a lambda(ÜÆž18Þ‚–ÐÑ1
 F
-java:S1604Š"(Make this anonymous inner class a lambda(†£°î8Œ¥‰·Ñ1
+java:S1604Š"(Make this anonymous inner class a lambda(†£°î8ÛƒªÐÑ1
 F
-java:S1604†"(Make this anonymous inner class a lambda(öØ¡À8Œ¥‰·Ñ1
+java:S1604†"(Make this anonymous inner class a lambda(öØ¡À8ÛƒªÐÑ1
 K
-java:S1604"(Make this anonymous inner class a lambda(Ÿ ¹ÿÿÿÿÿ8Œ¥‰·Ñ1
+java:S1604¢"(Make this anonymous inner class a lambda(Ÿ ¹ÿÿÿÿÿ8ÜƒªÐÑ1
 K
-java:S1604£"(Make this anonymous inner class a lambda(•–Û¨úÿÿÿÿ8Œ¥‰·Ñ1
+java:S1604¨"(Make this anonymous inner class a lambda(•–Û¨úÿÿÿÿ8ÜƒªÐÑ1
 ƒ
-java:S1450*"aRemove the "mButtonChooseImage" field and declare it as a local variable in the relevant methods.(Îž¢°ýÿÿÿÿ8ÿ¦‰·Ñ1
+java:S1450*"aRemove the "mButtonChooseImage" field and declare it as a local variable in the relevant methods.(Îž¢°ýÿÿÿÿ8œ„–ÐÑ1
 y
-java:S1450+"\Remove the "mButtonUpload" field and declare it as a local variable in the relevant methods.(Û¯‘8€§‰·Ñ1
+java:S1450+"\Remove the "mButtonUpload" field and declare it as a local variable in the relevant methods.(Û¯‘8œ„–ÐÑ1
 …
-java:S1450,"cRemove the "mTextViewShowUploads" field and declare it as a local variable in the relevant methods.(«ïëÏúÿÿÿÿ8€§‰·Ñ1
+java:S1450,"cRemove the "mTextViewShowUploads" field and declare it as a local variable in the relevant methods.(«ïëÏúÿÿÿÿ8„–ÐÑ1
 `
-java:S1874n">Remove this use of "startActivityForResult"; it is deprecated.(“Œñ¬ÿÿÿÿÿ8š§‰·Ñ1
+java:S1874n">Remove this use of "startActivityForResult"; it is deprecated.(“Œñ¬ÿÿÿÿÿ8±„–ÐÑ1
 f
-java:S1874r"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(¹Î¾8š§‰·Ñ1
+java:S1874r"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(¹Î¾8±„–ÐÑ1
 M
-java:S1874‰"/Remove this use of "Handler"; it is deprecated.(’Ú©Š8£§‰·Ñ1
+java:S1874‰"/Remove this use of "Handler"; it is deprecated.(’Ú©Š8Ú†ªÐÑ1
 m
-java:S1874³"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(Ó»×¶þÿÿÿÿ8ÔÐ‰·Ñ1
+java:S1874¸"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(Ó»×¶þÿÿÿÿ8ã†ªÐÑ1
 ]
-java:S1161³":Add the "@Override" annotation above this method signature(Ó»×¶þÿÿÿÿ8ÖÐ‰·Ñ1
+java:S1161¸":Add the "@Override" annotation above this method signature(Ó»×¶þÿÿÿÿ8ä†ªÐÑ1
