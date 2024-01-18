@@ -3,9 +3,12 @@ package com.example.photogallery;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,10 +32,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import android.Manifest;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 123;
 
     private Button mButtonChooseImage;
     private Button mButtonUpload;
@@ -60,6 +65,15 @@ public class MainActivity extends AppCompatActivity {
 
         mStorageReference = FirebaseStorage.getInstance().getReference("uploads");
         mDatabaseReference = FirebaseDatabase.getInstance().getReference("uploads");
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE);
+        }
+
+
 
         mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,18 +145,18 @@ public class MainActivity extends AppCompatActivity {
                             Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                                 while (!urlTask.isSuccessful());
                                 Uri downloadUrl = urlTask.getResult();
-
-                                //Log.d(TAG, "onSuccess: firebase download url: " + downloadUrl.toString()); //use if testing...don't need this line.
-                                Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),downloadUrl.toString());
+                                String defaultQuote = "";
+                                String defaultLocation = "";
+                                Upload upload = new Upload(
+                                    mEditTextFileName.getText().toString().trim(),
+                                    downloadUrl.toString(),
+                                    defaultQuote,
+                                    defaultLocation
+                                );
 
                                 String uploadId = mDatabaseReference.push().getKey();
                                 mDatabaseReference.child(uploadId).setValue(upload);
-                            /*
-                            Upload upload = new Upload(mEditTextFileName.getText().toString().trim(),
-                                    taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
-                            String uploadId = mDatabaseReference.push().getKey();
-                            mDatabaseReference.child(uploadId).setValue(upload);
-                             */
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -166,5 +180,15 @@ public class MainActivity extends AppCompatActivity {
     private void openImageActivity(){
         Intent intent = new Intent(this, ImagesActivity.class);
         startActivity(intent);
+    }
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, you can now access the device's location
+            } else {
+                Toast.makeText(this, "Location permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

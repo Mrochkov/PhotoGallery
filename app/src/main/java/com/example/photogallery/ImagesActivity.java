@@ -82,10 +82,13 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
     public void onItemClick(int position) {
         Intent intent = new Intent(this, ImageDetailActivity.class);
         Upload clickedItem = mUpload.get(position);
-        intent.putExtra("photo_url", mUpload.get(position).getImageUrl());
-        intent.putExtra("photo_name", clickedItem.getName());
 
-        // Add other photo details as extras if needed
+        intent.putExtra("upload_id", clickedItem.getKey());
+        intent.putExtra("photo_url", clickedItem.getImageUrl());
+        intent.putExtra("photo_name", clickedItem.getName());
+        intent.putExtra("photo_quote", clickedItem.getQuote());
+        intent.putExtra("photo_location", clickedItem.getLocation());
+
         startActivity(intent);
     }
 

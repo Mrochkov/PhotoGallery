@@ -6,22 +6,35 @@ public class Upload {
     private String mName;
     private String mImageUrl;
     private String mKey;
-
+    private String mQuote;
+    private String mLocation;
     public Upload() {
 
     }
 
 
-    public Upload (String name, String imageUrl) {
+    public Upload(String name, String imageUrl, String quote, String location) {
         if (name.trim().equals("")) {
-            name= "No Name";
+            name = "No Name";
         }
-
         mName = name;
         mImageUrl = imageUrl;
-
+        mQuote = (quote == null) ? "Fetching quote..." : quote;
+        mLocation = (location == null) ? "Fetching location..." : location;
     }
 
+    public String getQuote() {
+        return mQuote;
+    }
+    public void setQuote(String quote) {
+        mQuote = quote;
+    }
+    public String getLocation() {
+        return mLocation;
+    }
+    public void setLocation(String location) {
+        mQuote = location;
+    }
     public String getName() {
         return mName;
     }
