@@ -25,11 +25,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private OnItemClickListener mListener;
 
 
-    public ImageAdapter(Context context, List<Upload> uploads){
+    public ImageAdapter(Context context, DatabaseHelper db){
         mContext = context;
-        mUploads = uploads;
+        mUploads = db.getAllUploads();
     }
-
 
     @NonNull
     @Override
@@ -73,7 +72,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
         @Override
         public void onClick(View v) {
-            if(mListener != null) {
+            if (mListener != null) {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     mListener.onItemClick(position);

@@ -7,18 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +21,8 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
 
     private RecyclerView mRecyclerView;
     private ImageAdapter mAdapter;
-    private FirebaseStorage mStorage;
-    private DatabaseReference mDatabaseReference;
     private List<Upload> mUpload;
     private ProgressBar mProgressCircle;
-    private ValueEventListener mDataBaseListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,54 +34,35 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mProgressCircle = findViewById(R.id.progress_circle);
 
-        mUpload = new ArrayList<>();
 
-        mAdapter = new ImageAdapter(ImagesActivity.this, mUpload);
+        DatabaseHelper db = new DatabaseHelper(this);
+        mUpload = db.getAllUploads();
+        Log.d("ImagesActivity", "mUpload size after initialization: " + mUpload.size());
+
+        mAdapter = new ImageAdapter(ImagesActivity.this, db);
+
 
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(ImagesActivity.this);
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("uploads");
-        mStorage = FirebaseStorage.getInstance();
 
-        mDataBaseListener = mDatabaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                mUpload.clear();
-
-                for (DataSnapshot postSnapshot : snapshot.getChildren()){
-                    Upload upload = postSnapshot.getValue(Upload.class);
-                    upload.setKey(postSnapshot.getKey());
-                    mUpload.add(upload);
-                }
-                mAdapter.notifyDataSetChanged();
-
-                mProgressCircle.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ImagesActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                mProgressCircle.setVisibility(View.INVISIBLE);
-
-            }
-        });
     }
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(this, ImageDetailActivity.class);
+        Intent detailIntent = new Intent(this, ImageDetailActivity.class);
         Upload clickedItem = mUpload.get(position);
 
-        intent.putExtra("upload_id", clickedItem.getKey());
-        intent.putExtra("photo_url", clickedItem.getImageUrl());
-        intent.putExtra("photo_name", clickedItem.getName());
-        intent.putExtra("photo_quote", clickedItem.getQuote());
-        intent.putExtra("photo_location", clickedItem.getLocation());
+        detailIntent.putExtra("upload_id", clickedItem.getId());
+        detailIntent.putExtra("photo_url", clickedItem.getImageUrl());
+        detailIntent.putExtra("photo_name", clickedItem.getName());
+        detailIntent.putExtra("photo_quote", clickedItem.getQuote());
+        detailIntent.putExtra("photo_location", clickedItem.getLocation());
 
-        startActivity(intent);
+        startActivity(detailIntent);
     }
+
 
     @Override
     public void onWhateverClick(int position) {
@@ -100,23 +72,13 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
 
     @Override
     public void onDeleteClick(int position) {
-        Upload selectedItem = mUpload.get(position);
-        String selectedKey = selectedItem.getKey();
+        Toast.makeText(this, "Delete at position: " + position, Toast.LENGTH_SHORT).show();
 
-        StorageReference imageReference = mStorage.getReferenceFromUrl(selectedItem.getImageUrl());
-        imageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                mDatabaseReference.child(selectedKey).removeValue();
-                Toast.makeText(ImagesActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mDatabaseReference.removeEventListener(mDataBaseListener);
     }
 
 }

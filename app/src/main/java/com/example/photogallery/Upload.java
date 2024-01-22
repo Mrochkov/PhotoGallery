@@ -1,6 +1,5 @@
 package com.example.photogallery;
 
-import com.google.firebase.database.Exclude;
 
 public class Upload {
     private String mName;
@@ -8,6 +7,7 @@ public class Upload {
     private String mKey;
     private String mQuote;
     private String mLocation;
+    private int id;
     public Upload() {
 
     }
@@ -23,6 +23,12 @@ public class Upload {
         mLocation = (location == null) ? "Fetching location..." : location;
     }
 
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getQuote() {
         return mQuote;
     }
@@ -33,7 +39,7 @@ public class Upload {
         return mLocation;
     }
     public void setLocation(String location) {
-        mQuote = location;
+        mLocation = location;
     }
     public String getName() {
         return mName;
@@ -49,15 +55,6 @@ public class Upload {
 
     public void setImageUrl(String imageUrl){
         mImageUrl = imageUrl;
-    }
-
-    @Exclude
-    public String getKey(){
-        return mKey;
-    }
-    @Exclude
-    public void setKey(String key){
-        mKey = key;
     }
 
 }

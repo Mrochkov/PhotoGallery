@@ -1,6 +1,7 @@
 package com.example.photogallery;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -12,11 +13,10 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Locale;
 
 import android.Manifest;
+import android.widget.Toast;
 
 
 public class ImageDetailActivity extends AppCompatActivity {
@@ -41,74 +42,87 @@ public class ImageDetailActivity extends AppCompatActivity {
     private TextView textQuote;
     private LocationManager locationManager;
     private LocationListener locationListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_detail);
-        textViewLocation = findViewById(R.id.text_view_location);
-
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        String photoQuote = getIntent().getStringExtra("photo_quote");
-        String photoLocation = getIntent().getStringExtra("photo_location");
-
-        if (photoQuote != null && !photoQuote.isEmpty()) {
-            textQuote.setText(photoQuote);
-        } else {
-            fetchRandomQuote();
-        }
-
-
-
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                // Handle location changes
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                if (photoLocation != null && !photoLocation.isEmpty()) {
-                    textViewLocation.setText(photoLocation);
-                } else {
-                    fetchLocation(latitude, longitude);
-                }
-            }
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-            }
-        };
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    0, 0, locationListener);
-        }
 
         imageViewDetail = findViewById(R.id.image_view_detail);
         fileName = findViewById(R.id.text_view_name);
         textQuote = findViewById(R.id.text_view_quote);
+        textViewLocation = findViewById(R.id.text_view_location);
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+
+        try {
+            Intent intent = getIntent();
+            if (intent.hasExtra("upload_id")) {
+                int uploadId = intent.getIntExtra("upload_id", -1); // Default to -1 if not found
+                String photoUrl = intent.getStringExtra("photo_url");
+                String photoName = intent.getStringExtra("photo_name");
+                String photoQuote = intent.getStringExtra("photo_quote");
+                String photoLocation = intent.getStringExtra("photo_location");
+
+                // Set the data to your views
+                fileName.setText(photoName);
+                textQuote.setText(photoQuote);
+                textViewLocation.setText(photoLocation);
+                Picasso.with(this).load(photoUrl).into(imageViewDetail);
+            } else {
+                // Handle the case where there's no data passed
+                Toast.makeText(this, "No image data provided", Toast.LENGTH_SHORT).show();
+                finish(); // Close the activity as there's no data to display
+            }
+        } catch (NumberFormatException e) {
+            Toast.makeText(this, "Invalid image ID", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+        setupLocationListener();
         fetchRandomQuote();
 
-        String photoUrl = getIntent().getStringExtra("photo_url");
-        String photoName = getIntent().getStringExtra("photo_name");
-
-        fileName.setText(photoName);
-
-
-        Picasso.with(this)
-                .load(photoUrl)
-                .placeholder(R.mipmap.ic_launcher)
-                .fit()
-                .centerCrop()
-                .into(imageViewDetail);
-
     }
+
+
+        private void setupLocationListener() {
+            locationListener = new LocationListener() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    updateLocationText(location);
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+                @Override
+                public void onProviderEnabled(String provider) {}
+
+                @Override
+                public void onProviderDisabled(String provider) {}
+            };
+
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            }
+        }
+    private void updateLocationText(Location location) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            if (addresses.size() > 0) {
+                Address address = addresses.get(0);
+                String locationText = "Uploaded from location: " + address.getLocality() + ", " + address.getCountryName();
+                textViewLocation.setText(locationText);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            textViewLocation.setText("Unable to get location");
+        }
+    }
+
+
 
 
     private void fetchRandomQuote() {
@@ -138,10 +152,26 @@ public class ImageDetailActivity extends AppCompatActivity {
                 super.onPostExecute(quote);
                 if (quote != null) {
                     textQuote.setText("\"" + quote.getContent() + "\"\n- " + quote.getAuthor());
-                    saveDetailsToFirebase(quote.getContent(), null);
+                    saveQuoteToDatabase(quote.getContent());
                 }
             }
         }.execute();
+    }
+
+    private void saveQuoteToDatabase(String quote) {
+        try {
+            int uploadId = getIntent().getIntExtra("upload_id", -1);
+            if (uploadId != -1) {
+                DatabaseHelper db = new DatabaseHelper(this);
+                Upload upload = db.getUpload(uploadId);
+                if (upload != null) {
+                    upload.setQuote(quote);
+                    db.updateUpload(upload);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private Quote parseQuote(String json) {
@@ -156,25 +186,6 @@ public class ImageDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void saveDetailsToFirebase(String quote, String location) {
-        String uploadId = getIntent().getStringExtra("upload_id");
-        if (uploadId != null) {
-            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("uploads").child(uploadId);
-            if (quote != null) {
-                databaseRef.child("mQuote").setValue(quote);
-            }
-            if (location != null) {
-                databaseRef.child("mLocation").setValue(location);
-            }
-        }
-    }
-    private void updateLocationInFirebase(String location) {
-        String uploadId = getIntent().getStringExtra("upload_id");
-        if (uploadId != null) {
-            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("uploads").child(uploadId);
-            databaseRef.child("mLocation").setValue(location);
-        }
-    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -190,8 +201,6 @@ public class ImageDetailActivity extends AppCompatActivity {
                 String locationText = "Uploaded from location: " + address.getLocality() + ", " + address.getCountryName();
                 textViewLocation.setText(locationText);
 
-                // Update Firebase
-                updateLocationInFirebase(locationText);
             }
         } catch (IOException e) {
             e.printStackTrace();

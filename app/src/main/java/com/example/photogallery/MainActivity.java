@@ -21,17 +21,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
 import android.Manifest;
 
 public class MainActivity extends AppCompatActivity {
@@ -47,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private Uri mImageUri;
 
-    private StorageReference mStorageReference;
-    private DatabaseReference mDatabaseReference;
-    private StorageTask mUploadTask;
+    private DatabaseHelper mDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +52,7 @@ public class MainActivity extends AppCompatActivity {
         mImageView = findViewById(R.id.image_view);
         mProgressBar = findViewById(R.id.progress_bar);
 
-        mStorageReference = FirebaseStorage.getInstance().getReference("uploads");
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference("uploads");
+        mDatabaseHelper = new DatabaseHelper(this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -73,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
                     LOCATION_PERMISSION_REQUEST_CODE);
         }
 
-
-
         mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,15 +68,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         mButtonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mUploadTask != null && mUploadTask.isInProgress()){
-                    Toast.makeText(MainActivity.this, "Upload in progress", Toast.LENGTH_SHORT).show();
-                } else {
-                    uploadFile();
-                }
+                uploadFile();
             }
         });
 
@@ -101,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void openFileChooser() {
         Intent intent = new Intent();
@@ -114,73 +94,50 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-        && data != null && data.getData() != null){
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             mImageUri = data.getData();
 
             Picasso.with(this).load(mImageUri).into(mImageView);
         }
     }
-    private String getFileExtension(Uri uri){
+
+    private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
     private void uploadFile() {
-        if (mImageUri != null){
-            StorageReference fileReference = mStorageReference.child(System.currentTimeMillis()+"."+getFileExtension(mImageUri));
-            mUploadTask = fileReference.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mProgressBar.setProgress(0);
-                                }
-                            }, 500);
-                            Toast.makeText(MainActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
-                            Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                                while (!urlTask.isSuccessful());
-                                Uri downloadUrl = urlTask.getResult();
-                                String defaultQuote = "";
-                                String defaultLocation = "";
-                                Upload upload = new Upload(
-                                    mEditTextFileName.getText().toString().trim(),
-                                    downloadUrl.toString(),
-                                    defaultQuote,
-                                    defaultLocation
-                                );
+        if (mImageUri != null) {
+            // Save data to SQLite
+            Upload upload = new Upload(
+                    mEditTextFileName.getText().toString().trim(),
+                    mImageUri.toString(),
+                    null, // Set default quote
+                    null  // Set default location
+            );
+            long id = mDatabaseHelper.addUpload(upload);
 
-                                String uploadId = mDatabaseReference.push().getKey();
-                                mDatabaseReference.child(uploadId).setValue(upload);
+            if (id != -1) {
+                Toast.makeText(MainActivity.this, "Upload successful", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(MainActivity.this, "Failed to upload", Toast.LENGTH_SHORT).show();
+            }
 
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                            double progress = (100.0 * snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                            mProgressBar.setProgress((int) progress);
-                        }
-                    });
+            mEditTextFileName.setText("");
+            mImageView.setImageResource(0); // Clear image view
+            mImageUri = null; // Clear image URI
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void openImageActivity(){
+    private void openImageActivity() {
         Intent intent = new Intent(this, ImagesActivity.class);
         startActivity(intent);
     }
+
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
