@@ -57,30 +57,29 @@ public class ImageDetailActivity extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
-        try {
-            Intent intent = getIntent();
-            if (intent.hasExtra("upload_id")) {
-                int uploadId = intent.getIntExtra("upload_id", -1);
-                String photoUrl = intent.getStringExtra("photo_url");
-                String photoName = intent.getStringExtra("photo_name");
-                String photoQuote = intent.getStringExtra("photo_quote");
-                String photoLocation = intent.getStringExtra("photo_location");
-
-
-                fileName.setText(photoName);
-                textQuote.setText(photoQuote);
-                textViewLocation.setText(photoLocation);
-                Picasso.with(this)
-                        .load(new File(photoUrl))
-                        .into(imageViewDetail);            } else {
-
-                Toast.makeText(this, "No image data provided", Toast.LENGTH_SHORT).show();
-                finish();
+        Intent intent = getIntent();
+        if (intent.hasExtra("upload_id")) {
+            int uploadId = intent.getIntExtra("upload_id", -1);
+            DatabaseHelper db = new DatabaseHelper(this);
+            Upload upload = db.getUpload(uploadId);
+            if (upload != null) {
+                Picasso.with(this).load(new File(upload.getImageUrl())).into(imageViewDetail);
+                fileName.setText(upload.getName());
+                textViewLocation.setText(upload.getLocation());
+                if (upload.getQuote().equals("Fetching quote...")) {
+                    fetchRandomQuote();
+                } else {
+                    textQuote.setText(upload.getQuote());
+                }
+                if (upload.getLocation().equals("Fetching location...")) {
+                    setupLocationListener();
+                }
             }
-        } catch (NumberFormatException e) {
-            Toast.makeText(this, "Invalid image ID", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "No image data provided", Toast.LENGTH_SHORT).show();
             finish();
         }
+
         setupLocationListener();
         fetchRandomQuote();
 
@@ -152,10 +151,10 @@ public class ImageDetailActivity extends AppCompatActivity {
 
             @Override
             protected void onPostExecute(Quote quote) {
-                super.onPostExecute(quote);
                 if (quote != null) {
-                    textQuote.setText("\"" + quote.getContent() + "\"\n- " + quote.getAuthor());
-                    saveQuoteToDatabase(quote.getContent());
+                    String quoteText = "\"" + quote.getContent() + "\"\n- " + quote.getAuthor();
+                    textQuote.setText(quoteText);
+                    saveDetailsToDatabase(quoteText, textViewLocation.getText().toString());
                 }
             }
         }.execute();
@@ -192,7 +191,9 @@ public class ImageDetailActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        locationManager.removeUpdates(locationListener);
+        if (locationManager != null) {
+            locationManager.removeUpdates(locationListener);
+        }
     }
 
     private void fetchLocation(double latitude, double longitude) {
@@ -209,5 +210,20 @@ public class ImageDetailActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
+    private void saveDetailsToDatabase(String quote, String location) {
+        try {
+            int uploadId = getIntent().getIntExtra("upload_id", -1);
+            if (uploadId != -1) {
+                DatabaseHelper db = new DatabaseHelper(this);
+                Upload upload = db.getUpload(uploadId);
+                if (upload != null) {
+                    upload.setQuote(quote);
+                    upload.setLocation(location);
+                    db.updateUpload(upload);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
