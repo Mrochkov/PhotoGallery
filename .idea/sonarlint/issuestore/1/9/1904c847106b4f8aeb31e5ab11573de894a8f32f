@@ -1,33 +1,27 @@
 
-L
-java:S37404"/Provide the parametrized type for this generic.(Öö¥í8Ü‚–ĞÑ1
 J
-java:S1604N"(Make this anonymous inner class a lambda(ÍÄ…üÿÿÿÿ8Ş‚–ĞÑ1
+java:S1604@"(Make this anonymous inner class a lambda(ÍÄ…üÿÿÿÿ8‡Û÷Ò1
 J
-java:S1604V"(Make this anonymous inner class a lambda(è”¤ÿÿÿÿÿ8Ş‚–ĞÑ1
+java:S1604G"(Make this anonymous inner class a lambda(è”¤ÿÿÿÿÿ8„‡Û÷Ò1
 D
-java:S1604a"(Make this anonymous inner class a lambda(ÜÆ18Ş‚–ĞÑ1
-F
-java:S1604Š"(Make this anonymous inner class a lambda(†£°î8ÛƒªĞÑ1
-F
-java:S1604†"(Make this anonymous inner class a lambda(öØ¡À8ÛƒªĞÑ1
-K
-java:S1604¢"(Make this anonymous inner class a lambda(Ÿ ¹ÿÿÿÿÿ8ÜƒªĞÑ1
-K
-java:S1604¨"(Make this anonymous inner class a lambda(•–Û¨úÿÿÿÿ8ÜƒªĞÑ1
+java:S1604N"(Make this anonymous inner class a lambda(ÜÆ18†‡Û÷Ò1
 ƒ
-java:S1450*"aRemove the "mButtonChooseImage" field and declare it as a local variable in the relevant methods.(Î¢°ıÿÿÿÿ8œ„–ĞÑ1
+java:S1450!"aRemove the "mButtonChooseImage" field and declare it as a local variable in the relevant methods.(Î¢°ıÿÿÿÿ8İ‡Û÷Ò1
 y
-java:S1450+"\Remove the "mButtonUpload" field and declare it as a local variable in the relevant methods.(Û¯‘8œ„–ĞÑ1
+java:S1450""\Remove the "mButtonUpload" field and declare it as a local variable in the relevant methods.(Û¯‘8Ş‡Û÷Ò1
+}
+java:S1450&"[Remove the "mProgressBar" field and declare it as a local variable in the relevant methods.(ñ·Îşÿÿÿÿ8–õà÷Ò1
 …
-java:S1450,"cRemove the "mTextViewShowUploads" field and declare it as a local variable in the relevant methods.(«ïëÏúÿÿÿÿ8„–ĞÑ1
+java:S1450#"cRemove the "mTextViewShowUploads" field and declare it as a local variable in the relevant methods.(«ïëÏúÿÿÿÿ8ÈÅŞ÷Ò1
 `
-java:S1874n">Remove this use of "startActivityForResult"; it is deprecated.(“Œñ¬ÿÿÿÿÿ8±„–ĞÑ1
+java:S1874Z">Remove this use of "startActivityForResult"; it is deprecated.(“Œñ¬ÿÿÿÿÿ8ñÅŞ÷Ò1
 f
-java:S1874r"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(¹Î¾8±„–ĞÑ1
-M
-java:S1874‰"/Remove this use of "Handler"; it is deprecated.(’Ú©Š8Ú†ªĞÑ1
+java:S1874^"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(¹Î¾8ñÅŞ÷Ò1
 m
-java:S1874¸"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(Ó»×¶şÿÿÿÿ8ã†ªĞÑ1
+java:S1874"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(Ó»×¶şÿÿÿÿ8ŒÆŞ÷Ò1
 ]
-java:S1161¸":Add the "@Override" annotation above this method signature(Ó»×¶şÿÿÿÿ8ä†ªĞÑ1
+java:S1161":Add the "@Override" annotation above this method signature(Ó»×¶şÿÿÿÿ8ÆŞ÷Ò1
+R
+java:S1068&"0Remove this unused "mProgressBar" private field.(ñ·Îşÿÿÿÿ8Òõà÷Ò1
+Q
+java:S1144i"5Remove this unused private "getFileExtension" method.(¼ÿ&8Òõà÷Ò1

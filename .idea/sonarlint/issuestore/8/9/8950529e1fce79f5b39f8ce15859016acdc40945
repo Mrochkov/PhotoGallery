@@ -1,5 +1,11 @@
 
-J
-java:S1604k"(Make this anonymous inner class a lambda(İï¸Óıÿÿÿÿ8ìƒ£Ñ1
+y
+java:S1450"WRemove the "mAdapter" field and declare it as a local variable in the relevant methods.(û“Ìûÿÿÿÿ8®íË÷Ò1
+€
+java:S1450"^Remove the "mProgressCircle" field and declare it as a local variable in the relevant methods.(—­×Œÿÿÿÿÿ8°íË÷Ò1
 ~
-java:S1450"\Remove the "mRecyclerView" field and declare it as a local variable in the relevant methods.(Òéıÿÿÿÿ8ÖºÏ¢Ñ1
+java:S1450"\Remove the "mRecyclerView" field and declare it as a local variable in the relevant methods.(Òéıÿÿÿÿ8Ãğ…÷Ò1
+E
+java:S1185P"(Remove this method to simply inherit it.(ÍÙ÷¢8ôœÏ÷Ò1
+U
+java:S1068"3Remove this unused "mProgressCircle" private field.(—­×Œÿÿÿÿÿ8åíË÷Ò1

@@ -423,3 +423,5 @@ w
 G.idea/sonarlint/issuestore/4/8/4863281891d32ef796d6f680d78cb100e7c940be,d\8\d83eba5ea733cb5c0531ef72186b1c1f282329c8
 e
 5app/src/main/java/com/example/photogallery/Quote.java,2\d\2da8925f36b52f45610d4bc2191fcddeb3c84866
+n
+>app/src/main/java/com/example/photogallery/DatabaseHelper.java,e\a\eafa257e5757ba1db0a978b316307ef058391664

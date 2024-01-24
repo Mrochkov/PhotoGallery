@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
 
 import javax.xml.xpath.XPathFunctionResolver;
@@ -42,7 +43,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         Upload uploadCurrent = mUploads.get(i);
         imageViewHolder.textViewName.setText(uploadCurrent.getName());
         Picasso.with(mContext)
-                .load(uploadCurrent.getImageUrl())
+                .load(new File(uploadCurrent.getImageUrl()))
                 .placeholder(R.mipmap.ic_launcher)
                 .fit()
                 .centerCrop()

@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -59,21 +60,22 @@ public class ImageDetailActivity extends AppCompatActivity {
         try {
             Intent intent = getIntent();
             if (intent.hasExtra("upload_id")) {
-                int uploadId = intent.getIntExtra("upload_id", -1); // Default to -1 if not found
+                int uploadId = intent.getIntExtra("upload_id", -1);
                 String photoUrl = intent.getStringExtra("photo_url");
                 String photoName = intent.getStringExtra("photo_name");
                 String photoQuote = intent.getStringExtra("photo_quote");
                 String photoLocation = intent.getStringExtra("photo_location");
 
-                // Set the data to your views
+
                 fileName.setText(photoName);
                 textQuote.setText(photoQuote);
                 textViewLocation.setText(photoLocation);
-                Picasso.with(this).load(photoUrl).into(imageViewDetail);
-            } else {
-                // Handle the case where there's no data passed
+                Picasso.with(this)
+                        .load(new File(photoUrl))
+                        .into(imageViewDetail);            } else {
+
                 Toast.makeText(this, "No image data provided", Toast.LENGTH_SHORT).show();
-                finish(); // Close the activity as there's no data to display
+                finish();
             }
         } catch (NumberFormatException e) {
             Toast.makeText(this, "Invalid image ID", Toast.LENGTH_SHORT).show();
@@ -81,6 +83,7 @@ public class ImageDetailActivity extends AppCompatActivity {
         }
         setupLocationListener();
         fetchRandomQuote();
+
 
     }
 

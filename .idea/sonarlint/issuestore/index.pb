@@ -423,3 +423,5 @@ s
 Capp/src/main/java/com/example/photogallery/ImageDetailActivity.java,8\7\871a7c5255f78e043792ae3cfa59f2ee5e68adeb
 e
 5app/src/main/java/com/example/photogallery/Quote.java,2\d\2da8925f36b52f45610d4bc2191fcddeb3c84866
+n
+>app/src/main/java/com/example/photogallery/DatabaseHelper.java,e\a\eafa257e5757ba1db0a978b316307ef058391664
