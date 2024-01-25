@@ -18,6 +18,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_IMAGE_URL = "imageUrl";
     private static final String COLUMN_QUOTE = "quote";
     private static final String COLUMN_LOCATION = "location";
+    private static final String COLUMN_COUNTRY = "country";
+    private static final String COLUMN_POPULATION = "population";
+    private static final String COLUMN_IS_CAPITAL = "is_capital";
 
     private static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE_UPLOADS + " (" +
@@ -25,9 +28,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COLUMN_NAME + " TEXT, " +
                     COLUMN_IMAGE_URL + " TEXT, " +
                     COLUMN_QUOTE + " TEXT, " +
-                    COLUMN_LOCATION + " TEXT" +
+                    COLUMN_LOCATION + " TEXT, " +
+                    COLUMN_COUNTRY + " TEXT, " +
+                    COLUMN_POPULATION + " INTEGER, " +
+                    COLUMN_IS_CAPITAL + " INTEGER" +
                     ")";
-
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

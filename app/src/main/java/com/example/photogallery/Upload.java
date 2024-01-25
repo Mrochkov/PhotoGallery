@@ -8,6 +8,10 @@ public class Upload {
     private String mQuote;
     private String mLocation;
     private int id;
+    private String mCountry;
+    private int mPopulation;
+    private boolean mIsCapital;
+
     public Upload() {
 
     }
@@ -56,5 +60,27 @@ public class Upload {
     public void setImageUrl(String imageUrl){
         mImageUrl = imageUrl;
     }
+    public String getCountry() {
+        return mCountry;
+    }
 
+    public void setCountry(String country) {
+        mCountry = country;
+    }
+
+    public int getPopulation() {
+        return mPopulation;
+    }
+
+    public void setPopulation(int population) {
+        mPopulation = population;
+    }
+
+    public boolean isCapital() {
+        return mIsCapital;
+    }
+
+    public void setCapital(boolean isCapital) {
+        mIsCapital = isCapital;
+    }
 }

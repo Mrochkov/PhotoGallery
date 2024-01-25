@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,6 +30,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,6 +45,8 @@ public class ImageDetailActivity extends AppCompatActivity {
     private TextView textQuote;
     private LocationManager locationManager;
     private LocationListener locationListener;
+    private Upload upload;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,7 @@ public class ImageDetailActivity extends AppCompatActivity {
         fileName = findViewById(R.id.text_view_name);
         textQuote = findViewById(R.id.text_view_quote);
         textViewLocation = findViewById(R.id.text_view_location);
+        TextView textViewCountry = findViewById(R.id.text_view_country);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -61,7 +66,7 @@ public class ImageDetailActivity extends AppCompatActivity {
         if (intent.hasExtra("upload_id")) {
             int uploadId = intent.getIntExtra("upload_id", -1);
             DatabaseHelper db = new DatabaseHelper(this);
-            Upload upload = db.getUpload(uploadId);
+            upload = db.getUpload(uploadId);
             if (upload != null) {
                 Picasso.with(this).load(new File(upload.getImageUrl())).into(imageViewDetail);
                 fileName.setText(upload.getName());
@@ -115,8 +120,12 @@ public class ImageDetailActivity extends AppCompatActivity {
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             if (addresses.size() > 0) {
                 Address address = addresses.get(0);
-                String locationText = "Uploaded from location: " + address.getLocality() + ", " + address.getCountryName();
-                textViewLocation.setText(locationText);
+                String cityName = address.getLocality();
+                if (upload != null) {
+                    fetchCityData(cityName, upload);
+                    String locationText = "Uploaded from location: " + cityName;
+                    textViewLocation.setText(locationText);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -160,6 +169,82 @@ public class ImageDetailActivity extends AppCompatActivity {
         }.execute();
     }
 
+    private void fetchCityData(String cityName, final Upload upload) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                try {
+                    String urlString = "https://api.api-ninjas.com/v1/city?name=" + URLEncoder.encode(cityName, "UTF-8");
+                    URL url = new URL(urlString);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestProperty("X-Api-Key", "RhSKPQtGAVtJk6ZFT+Xb9Q==n4M8V6UaIwlz37nU");
+                    connection.setRequestMethod("GET");
+                    InputStream inputStream = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+                    return response.toString();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String response) {
+                if (response != null && !response.isEmpty()) {
+                    parseAndDisplayCityInfo(response, upload);
+                }
+            }
+        }.execute();
+    }
+    private void parseAndDisplayCityInfo(String response, Upload upload) {
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            if (jsonArray.length() > 0) {
+                JSONObject cityInfo = jsonArray.getJSONObject(0);
+                String country = cityInfo.optString("country", "Not available");
+                int population = cityInfo.optInt("population", -1);
+                boolean isCapital = cityInfo.optBoolean("is_capital", false);
+
+                upload.setCountry(country);
+                upload.setPopulation(population);
+                upload.setCapital(isCapital);
+
+                DatabaseHelper db = new DatabaseHelper(this);
+                db.updateUpload(upload);
+
+                displayUploadDetails(upload);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+    private void displayUploadDetails(Upload upload) {
+        StringBuilder infoBuilder = new StringBuilder();
+        infoBuilder.append("Country: ").append(upload.getCountry()).append("\n");
+        infoBuilder.append("Population: ").append(upload.getPopulation()).append("\n");
+        infoBuilder.append("Is Capital: ").append(upload.isCapital() ? "Yes" : "No").append("\n");
+
+        TextView textViewDetails = findViewById(R.id.text_view_country);
+        textViewDetails.setText(infoBuilder.toString());
+    }
+
+    private void setupView(int uploadId) {
+        DatabaseHelper db = new DatabaseHelper(this);
+        Upload upload = db.getUpload(uploadId);
+
+        if (upload != null) {
+            if (upload.getCountry() == null || upload.getPopulation() == -1) {
+                fetchCityData(upload.getLocation(), upload);
+            } else {
+                displayUploadDetails(upload);
+            }
+        }
+    }
     private void saveQuoteToDatabase(String quote) {
         try {
             int uploadId = getIntent().getIntExtra("upload_id", -1);
