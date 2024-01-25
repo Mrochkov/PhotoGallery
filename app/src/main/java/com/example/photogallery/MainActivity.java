@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
                 );
 
             } else if (requestCode == CAMERA_REQUEST_CODE) {
-                // Handle camera capture
                 Picasso.with(this).load(mImageUri).into(mImageView);
 
                 String imagePath = getRealPathFromURI(this, mImageUri);
@@ -152,11 +151,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private String getFileExtension(Uri uri) {
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(uri));
-    }
 
     private void uploadFile() {
         if (mImageUri != null) {
@@ -169,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
                     null
             );
 
-            // Save data to SQLite
             long id = mDatabaseHelper.addUpload(upload);
 
             if (id != -1) {

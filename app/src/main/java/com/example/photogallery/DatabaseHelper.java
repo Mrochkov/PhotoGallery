@@ -112,12 +112,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor != null && cursor.moveToFirst()) {
             Upload upload = new Upload(
-                    cursor.getString(1), // Name
-                    cursor.getString(2), // Image URL
-                    cursor.getString(3), // Quote
-                    cursor.getString(4)  // Location
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4)
             );
-            upload.setId(cursor.getInt(0)); // ID
+            upload.setId(cursor.getInt(0));
             cursor.close();
             return upload;
         }

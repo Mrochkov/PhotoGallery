@@ -122,8 +122,17 @@ public class ImageDetailActivity extends AppCompatActivity {
                 Address address = addresses.get(0);
                 String cityName = address.getLocality();
                 if (upload != null) {
+                    DatabaseHelper db = new DatabaseHelper(this);
+
+
+                    if (upload.getLocation().equals("Fetching location...")) {
+                        upload.setLocation(cityName);
+                        db.updateUpload(upload);
+                    } else {
+                        upload = db.getUpload(upload.getId());
+                    }
                     fetchCityData(cityName, upload);
-                    String locationText = "Uploaded from location: " + cityName;
+                    String locationText = upload.getLocation();
                     textViewLocation.setText(locationText);
                 }
             }
@@ -177,7 +186,7 @@ public class ImageDetailActivity extends AppCompatActivity {
                     String urlString = "https://api.api-ninjas.com/v1/city?name=" + URLEncoder.encode(cityName, "UTF-8");
                     URL url = new URL(urlString);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestProperty("X-Api-Key", "jA7r8AoQbSfDfPerPk+qPw==OlF3XTRWVGgDSAwW");
+                    connection.setRequestProperty("X-Api-Key", "i3ZyjsRmGwbMEQ8/ccw2DA==DNeyMDln2MH5clsT");
                     connection.setRequestMethod("GET");
                     InputStream inputStream = connection.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -233,33 +242,6 @@ public class ImageDetailActivity extends AppCompatActivity {
         textViewDetails.setText(infoBuilder.toString());
     }
 
-    private void setupView(int uploadId) {
-        DatabaseHelper db = new DatabaseHelper(this);
-        Upload upload = db.getUpload(uploadId);
-
-        if (upload != null) {
-            if (upload.getCountry() == null || upload.getPopulation() == -1) {
-                fetchCityData(upload.getLocation(), upload);
-            } else {
-                displayUploadDetails(upload);
-            }
-        }
-    }
-    private void saveQuoteToDatabase(String quote) {
-        try {
-            int uploadId = getIntent().getIntExtra("upload_id", -1);
-            if (uploadId != -1) {
-                DatabaseHelper db = new DatabaseHelper(this);
-                Upload upload = db.getUpload(uploadId);
-                if (upload != null) {
-                    upload.setQuote(quote);
-                    db.updateUpload(upload);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private Quote parseQuote(String json) {
         try {
@@ -281,20 +263,7 @@ public class ImageDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void fetchLocation(double latitude, double longitude) {
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            if (addresses.size() > 0) {
-                Address address = addresses.get(0);
-                String locationText = "Uploaded from location: " + address.getLocality() + ", " + address.getCountryName();
-                textViewLocation.setText(locationText);
 
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     private void saveDetailsToDatabase(String quote, String location) {
         try {
             int uploadId = getIntent().getIntExtra("upload_id", -1);

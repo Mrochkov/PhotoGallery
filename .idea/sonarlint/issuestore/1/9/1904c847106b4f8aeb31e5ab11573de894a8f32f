@@ -1,42 +1,56 @@
 
-n	java:S117¶"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ñ²ùÏ8á…»ëÓ1
-J
-java:S1604J"(Make this anonymous inner class a lambda(ÍÄ…üÿÿÿÿ8±Ş¹éÓ1
-J
-java:S1604Q"(Make this anonymous inner class a lambda(è”¤ÿÿÿÿÿ8±Ş¹éÓ1
+n	java:S117×"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ñ²ùÏ8¯ÉöÓ1
 D
-java:S1604X"(Make this anonymous inner class a lambda(ÜÆ18±Ş¹éÓ1
-ƒ
-java:S1450%"aRemove the "mButtonChooseImage" field and declare it as a local variable in the relevant methods.(Î¢°ıÿÿÿÿ8”ß¹éÓ1
-y
-java:S1450&"\Remove the "mButtonUpload" field and declare it as a local variable in the relevant methods.(Û¯‘8•ß¹éÓ1
-}
-java:S1450*"[Remove the "mProgressBar" field and declare it as a local variable in the relevant methods.(ñ·Îşÿÿÿÿ8•ß¹éÓ1
-…
-java:S1450'"cRemove the "mTextViewShowUploads" field and declare it as a local variable in the relevant methods.(«ïëÏúÿÿÿÿ8–ß¹éÓ1
-E	java:S108A")Either remove or fill this block of code.(âêÜ†8®Ÿ¼ëÓ1
-E	java:S108G")Either remove or fill this block of code.(å¥‡8¯Ÿ¼ëÓ1
+java:S1604N"(Make this anonymous inner class a lambda(ú¶õ8°ÉöÓ1
+J
+java:S1604Z"(Make this anonymous inner class a lambda(ÍÄ…üÿÿÿÿ8°ÉöÓ1
+J
+java:S1604a"(Make this anonymous inner class a lambda(è”¤ÿÿÿÿÿ8°ÉöÓ1
+D
+java:S1604h"(Make this anonymous inner class a lambda(ÜÆ18¬ÒØöÓ1
 `
-java:S1874g">Remove this use of "startActivityForResult"; it is deprecated.(“Œñ¬ÿÿÿÿÿ8‰ÕÍéÓ1
+java:S2259"BA "NullPointerException" could be thrown; "data" is nullable here.(ûÇèÔ8ÀöÌöÓ1
+ƒ
+java:S1450("aRemove the "mButtonChooseImage" field and declare it as a local variable in the relevant methods.(Î¢°ıÿÿÿÿ8øÉöÓ1
+y
+java:S1450)"\Remove the "mButtonUpload" field and declare it as a local variable in the relevant methods.(Û¯‘8ùÉöÓ1
+}
+java:S1450-"[Remove the "mProgressBar" field and declare it as a local variable in the relevant methods.(ñ·Îşÿÿÿÿ8ùÉöÓ1
+…
+java:S1450*"cRemove the "mTextViewShowUploads" field and declare it as a local variable in the relevant methods.(«ïëÏúÿÿÿÿ8úÉöÓ1
+E	java:S108D")Either remove or fill this block of code.(âêÜ†8ˆŸÉöÓ1
+E	java:S108J")Either remove or fill this block of code.(å¥‡8ˆŸÉöÓ1
+`
+java:S1874w">Remove this use of "startActivityForResult"; it is deprecated.(“Œñ¬ÿÿÿÿÿ8“ŸÉöÓ1
 f
-java:S1874l"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(¹Î¾8¹ß¹éÓ1
-V
-java:S1854t":Remove this useless assignment to local variable "upload".(Êº 
-8ÄŸëÓ1
-G
-java:S1481t"+Remove this unused "upload" local variable.(Êº 
-8—ÄŸëÓ1
+java:S1874|"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(¹Î¾8“ŸÉöÓ1
+W
+java:S1854…":Remove this useless assignment to local variable "upload".(Êº 
+8âöÌöÓ1
+W
+java:S1854":Remove this useless assignment to local variable "upload".(Êº 
+8âöÌöÓ1
+H
+java:S1481…"+Remove this unused "upload" local variable.(Êº 
+8åöÌöÓ1
+H
+java:S1481"+Remove this unused "upload" local variable.(Êº 
+8æöÌöÓ1
 m
-java:S1874¦"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(Ó»×¶şÿÿÿÿ8­ÿ–êÓ1
-]
-java:S1161¦":Add the "@Override" annotation above this method signature(Ó»×¶şÿÿÿÿ8­ÿ–êÓ1
+java:S1874Á"JDon't override a deprecated method or explicitly mark it as "@Deprecated".(Ó»×¶şÿÿÿÿ8—ûÙöÓ1
 p
-java:S3252´"MUse static access with "android.provider.MediaStore$MediaColumns" for "DATA".(ÅöÔ¡üÿÿÿÿ8·‡»ëÓ1
+java:S3252Õ"MUse static access with "android.provider.MediaStore$MediaColumns" for "DATA".(ÅöÔ¡üÿÿÿÿ8¥ŸÉöÓ1
 k
-java:S3252¶"MUse static access with "android.provider.MediaStore$MediaColumns" for "DATA".(ñ²ùÏ8·‡»ëÓ1
+java:S3252×"MUse static access with "android.provider.MediaStore$MediaColumns" for "DATA".(ñ²ùÏ8¦ŸÉöÓ1
+l
+java:S3252ì"NUse static access with "android.provider.MediaStore$MediaColumns" for "TITLE".(´ø¨œ8­ŸÉöÓ1
+~
+java:S3252í"[Use static access with "android.provider.MediaStore$Images$ImageColumns" for "DESCRIPTION".(ß“ÙÜıÿÿÿÿ8­ŸÉöÓ1
+\
+java:S1874ò">Remove this use of "startActivityForResult"; it is deprecated.(¡¢ş8°ŸÉöÓ1
 a
-java:S1068""DRemove this unused "LOCATION_PERMISSION_REQUEST_CODE" private field.(Ğï¡²8Ëß¹éÓ1
+java:S1068#"DRemove this unused "LOCATION_PERMISSION_REQUEST_CODE" private field.(Ğï¡²8°ŸÉöÓ1
 R
-java:S1068*"0Remove this unused "mProgressBar" private field.(ñ·Îşÿÿÿÿ8Ëß¹éÓ1
-Q
-java:S1144"5Remove this unused private "getFileExtension" method.(¼ÿ&8Î÷÷éÓ1
+java:S1068-"0Remove this unused "mProgressBar" private field.(ñ·Îşÿÿÿÿ8°ŸÉöÓ1
+R
+java:S1144š"5Remove this unused private "getFileExtension" method.(¼ÿ&8±ŸÉöÓ1
