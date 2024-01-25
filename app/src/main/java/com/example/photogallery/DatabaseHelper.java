@@ -81,13 +81,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Method to fetch all uploads
     public List<Upload> getAllUploads() {
         List<Upload> uploadList = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_UPLOADS;
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
+        uploadList.clear();
 
         if (cursor.moveToFirst()) {
             do {

@@ -94,7 +94,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
         @Override
         public boolean onMenuItemClick(@androidx.annotation.NonNull MenuItem item) {
-            if(mListener != null) {
+            if (mListener != null) {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     switch (item.getItemId()) {
@@ -105,7 +105,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                             mListener.onDeleteClick(position);
                             return true;
                     }
-
                 }
             }
             return false;

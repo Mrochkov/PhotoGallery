@@ -37,11 +37,7 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
 
         DatabaseHelper db = new DatabaseHelper(this);
         mUpload = db.getAllUploads();
-        Log.d("ImagesActivity", "mUpload size after initialization: " + mUpload.size());
-
         mAdapter = new ImageAdapter(ImagesActivity.this, db);
-
-
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(ImagesActivity.this);
 
@@ -72,8 +68,18 @@ public class ImagesActivity extends AppCompatActivity implements ImageAdapter.On
 
     @Override
     public void onDeleteClick(int position) {
-        Toast.makeText(this, "Delete at position: " + position, Toast.LENGTH_SHORT).show();
+        DatabaseHelper db = new DatabaseHelper(this);
+        Upload clickedItem = mUpload.get(position);
+        db.deleteUpload(clickedItem.getId());
+        mUpload.remove(position);
+        refreshRecyclerView();
 
+        Toast.makeText(this, "Deleted item at position: " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    private void refreshRecyclerView() {
+        mAdapter = new ImageAdapter(ImagesActivity.this, new DatabaseHelper(this));
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
