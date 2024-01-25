@@ -1,11 +1,9 @@
 
-y
-java:S1450"WRemove the "mAdapter" field and declare it as a local variable in the relevant methods.(û“Ìûÿÿÿÿ8ú—°èÓ1
+n
+java:S2095G"LUse try-with-resources or close this "DatabaseHelper" in a "finally" clause.(šäç¹ûÿÿÿÿ8°³èôÓ1
 €
-java:S1450"^Remove the "mProgressCircle" field and declare it as a local variable in the relevant methods.(—­×Œÿÿÿÿÿ8°íË÷Ò1
-~
-java:S1450"\Remove the "mRecyclerView" field and declare it as a local variable in the relevant methods.(Òéıÿÿÿÿ8Ãğ…÷Ò1
+java:S1450"^Remove the "mProgressCircle" field and declare it as a local variable in the relevant methods.(—­×Œÿÿÿÿÿ8À³èôÓ1
 E
-java:S1185P"(Remove this method to simply inherit it.(ÍÙ÷¢8ôœÏ÷Ò1
+java:S1185V"(Remove this method to simply inherit it.(ÍÙ÷¢8ú³èôÓ1
 U
-java:S1068"3Remove this unused "mProgressCircle" private field.(—­×Œÿÿÿÿÿ8åíË÷Ò1
+java:S1068"3Remove this unused "mProgressCircle" private field.(—­×Œÿÿÿÿÿ8û³èôÓ1

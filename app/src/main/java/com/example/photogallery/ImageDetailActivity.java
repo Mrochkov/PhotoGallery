@@ -177,7 +177,7 @@ public class ImageDetailActivity extends AppCompatActivity {
                     String urlString = "https://api.api-ninjas.com/v1/city?name=" + URLEncoder.encode(cityName, "UTF-8");
                     URL url = new URL(urlString);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setRequestProperty("X-Api-Key", "RhSKPQtGAVtJk6ZFT+Xb9Q==n4M8V6UaIwlz37nU");
+                    connection.setRequestProperty("X-Api-Key", "jA7r8AoQbSfDfPerPk+qPw==OlF3XTRWVGgDSAwW");
                     connection.setRequestMethod("GET");
                     InputStream inputStream = connection.getInputStream();
                     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));

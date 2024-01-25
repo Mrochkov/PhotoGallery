@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 123;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    private static final int PERMISSIONS_REQUEST_CODE = 10;
+    private static final int CAMERA_REQUEST_CODE = 2;
 
     private Button mButtonChooseImage;
     private Button mButtonUpload;
@@ -71,6 +74,19 @@ public class MainActivity extends AppCompatActivity {
         } else {
         }
 
+        Button mButtonCaptureImage = findViewById(R.id.button_capture_image);
+        mButtonCaptureImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    launchCamera();
+                } else {
+                    requestPermissions();
+                }
+            }
+        });
+
         mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,19 +124,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            mImageUri = data.getData();
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICK_IMAGE_REQUEST) {
+                mImageUri = data.getData();
+                Picasso.with(this).load(mImageUri).into(mImageView);
 
-            String imagePath = getRealPathFromURI(this, mImageUri);
+                String imagePath = getRealPathFromURI(this, mImageUri);
+                Upload upload = new Upload(
+                        mEditTextFileName.getText().toString().trim(),
+                        imagePath,
+                        null,
+                        null
+                );
 
-            Upload upload = new Upload(
-                    mEditTextFileName.getText().toString().trim(),
-                    imagePath,
-                    null,
-                    null
-            );
+            } else if (requestCode == CAMERA_REQUEST_CODE) {
+                // Handle camera capture
+                Picasso.with(this).load(mImageUri).into(mImageView);
 
-
+                String imagePath = getRealPathFromURI(this, mImageUri);
+                Upload upload = new Upload(
+                        mEditTextFileName.getText().toString().trim(),
+                        imagePath,
+                        null,
+                        null
+                );
+            }
         }
     }
 
@@ -163,13 +191,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
+        if (requestCode == PERMISSIONS_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                launchCamera();
+            } else {
+                Toast.makeText(MainActivity.this, "Camera permission is required", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openFileChooser();
             } else {
-                Toast.makeText(MainActivity.this, "Permission denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Storage permission denied", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -187,5 +222,25 @@ public class MainActivity extends AppCompatActivity {
                 cursor.close();
             }
         }
+    }
+
+    private void requestPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSIONS_REQUEST_CODE);
+        }
+    }
+    private void launchCamera() {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "New Picture");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");
+        mImageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
     }
 }
